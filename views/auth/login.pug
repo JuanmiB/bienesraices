@@ -1,0 +1,19 @@
+extends ../layout/index
+
+block contenido
+ div.py-10 
+    h1.text-4xl.my-10.font-extrabold.text-center Bienes 
+        span.font-normal Raices
+    h2.text-center.text-4xl.font-extrabold Ingresa a tu cuenta
+    section.mt-8.mx-auto.max-w-md
+        div.bg-white.py-8.px-4.shadow
+            form.space-y-5
+                div
+                    label.block.text-sm.uppercase.text-gray-500.mb-5.font-bold(for="email") Email
+                        input(class="placeholder:italic")(type="email" name="email" id="email" placeholder="Nombre").block.w-64.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400
+                div 
+                    label.block.text-sm.uppercase.text-gray-500.mb-5.font-bold(for="contraseña") Contaseña
+                       input(class="placeholder:italic")(type="password" name="password" id="password" placeholder="email@ejemplo.com").block.w-64.px-3.py-2.border.border-gray-300.rounded-md.placeholder-gray-400
+                       a(href="recover-password")
+                        small Olvidaste tu contraseña?
+                input(class="w-32 bg-indigo-600 hover:bg-indigo-900 rounded-md py-2 active:bg-indigo-200" type="submit" value="Iniciar Sesión")

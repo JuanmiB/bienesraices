@@ -1,0 +1,6 @@
+Funcionamiento de CSURF
+Dendencia para protegerse de los csrf
+Crea una llave la cual se comparte en el servidor y en el navegador
+Comprueba de que url proviene la req
+Se debe pasar el token a la vista y mandarse dentro del formulario del domino
+se crea un input oculto con name= "_csrf" value= csrfToken
