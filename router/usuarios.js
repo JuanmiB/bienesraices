@@ -7,12 +7,14 @@ import {
     confirmarCuenta,
     resetPassword,
     validateToken,
-    generateNewPassword
+    generateNewPassword,
+    authentication
  } from "../controller/usuario.js"
 
 export const userRouter = Router()
 //login
 userRouter.get('/login', formLogin)
+userRouter.post('/login', authentication)
 
 //registrer
 userRouter.get('/registrer', formSingIn)

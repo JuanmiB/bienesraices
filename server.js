@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser"
 // import { csrfSync } from "csrf-sync"
 import db from "./config/db.js"
 import { userRouter } from "./router/usuarios.js"
+import { propiedadesRouter } from "./router/propiedadesRouter.js"
 //Crear la app
  const app = express()
 
@@ -37,6 +38,7 @@ import { userRouter } from "./router/usuarios.js"
 
     // Routing
  app.use('/api/v1/auth', userRouter)
+ app.use('/api/v1/', propiedadesRouter)
 
  const PORT = process.env.PORT || 1234
  app.listen(PORT, () => {
