@@ -7,3 +7,10 @@ export const admin = (req, res ) => {
 
     })
 }
+
+export const newProperties = (req, res) => {
+    res.render("propiedades/new-properties",{
+        titulo: "Crear propiedad",
+        pagina:"Crear propiedad"
+    })
+}

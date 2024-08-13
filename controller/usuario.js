@@ -68,7 +68,7 @@ export const authentication = async (req, res) => {
        //secure: true, // Debe haber certificado SSL (Https)
         // sameSite: "Strict",
 
-    }).redirect("/api/v1/mis-propiedades")
+    }).redirect("/api/v1/propiedades/mis-propiedades")
 }
 export const formSingIn = (req, res) => {
 
@@ -127,8 +127,7 @@ export const registrarUser = async (req, res) => {
         confirm: false,
         token: generarId()
     })
-    console.log("Este es el usuario creado sin confirmar mediante mail");
-    console.log(usuario);
+    
     //ENVIO DE EMAIL DE CONFIRMACION
     emailRegistrer({
         nombre: usuario.nombre,

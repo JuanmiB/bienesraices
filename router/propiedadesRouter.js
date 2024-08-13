@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { admin } from "../controller/propiedadesControles.js";
+import { admin, newProperties } from "../controller/propiedadesControles.js";
 
 export const propiedadesRouter = Router()
 
 propiedadesRouter.get('/mis-propiedades', admin)
+propiedadesRouter.get('/new-properties', newProperties)

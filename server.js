@@ -38,7 +38,7 @@ import { propiedadesRouter } from "./router/propiedadesRouter.js"
 
     // Routing
  app.use('/api/v1/auth', userRouter)
- app.use('/api/v1/', propiedadesRouter)
+ app.use('/api/v1/propiedades', propiedadesRouter)
 
  const PORT = process.env.PORT || 1234
  app.listen(PORT, () => {
