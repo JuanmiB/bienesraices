@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 // import session from "express-session"
 // import { csrfSync } from "csrf-sync"
 import db from "./config/db.js"
+import passport from "./config/passport.js"
 import { userRouter } from "./router/usuarios.js"
 import { propiedadesRouter } from "./router/propiedadesRouter.js"
 //Crear la app
@@ -14,12 +15,16 @@ import { propiedadesRouter } from "./router/propiedadesRouter.js"
 
  //habilitar lectura de datos de formulario
  app.use(express.urlencoded({extended: true}))
+ 
+ // Middleware de passport configurado
+  app.use(passport.initialize())
 
  //habilitar COOKIE PARSER
  app.use(cookieParser())
 
  // habilitar CSRF
  app.use(csurf({cookie: true}))
+
 
  // Conexion a la BASE DE DATOS
  try{

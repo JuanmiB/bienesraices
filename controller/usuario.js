@@ -20,7 +20,7 @@ export const authentication = async (req, res) => {
         //Errores
         return res.render('auth/login', {
             pagina: "login",
-            titulo: "error en autenticacion",
+            titulo: "Error en la autenticacion",
             csrfToken: req.csrfToken(),
             errores: resultado.array(),
             userData: {
@@ -31,7 +31,7 @@ export const authentication = async (req, res) => {
 
     const { email, password } = req.body
 
-    //validar que el usuario exista
+    // Buscar al ususario en la BD
     const user = await Usuario.findOne({ where: { email } })
     console.log(user);
 
@@ -39,7 +39,7 @@ export const authentication = async (req, res) => {
         return res.render('auth/login', {
             pagina: 'Iniciar Sesión',
             csrfToken: req.csrfToken(),
-            errores: [{ msg: 'El Usuario No Existe' }]
+            errores: [{ msg: 'El usuario no existe' }]
         })
     }
     //validar usuario confirmado
@@ -47,7 +47,7 @@ export const authentication = async (req, res) => {
         return res.render('auth/login', {
             pagina: 'Iniciar Sesión',
             csrfToken: req.csrfToken(),
-            errores: [{ msg: 'Tu Cuenta no ha sido Confirmada' }]
+            errores: [{ msg: 'Tu cuenta no ha sido confirmada aun' }]
         })
 
     }
@@ -62,6 +62,7 @@ export const authentication = async (req, res) => {
 
 // autenticar al usuario
     const token = generateToken({ id: user.id, nombre: user.nombre })
+    console.log("JWT-----> ", token);
 
     return res.cookie("_token", token, {
         httpOnly: true,

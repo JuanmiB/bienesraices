@@ -5,7 +5,7 @@ export const generarId = () => Date.now().toString(32) + Math.random().toString(
 
 
 // Generar JWT con palabra secreta
-const secret = "agumon"
+const secret = process.env.JWT_SECRET
 export function generateToken(user){
     //Creo la carga util con los datos del usuario
     const payload = {
