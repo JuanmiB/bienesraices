@@ -25,6 +25,13 @@ export const Usuario = db.define('usuarios', {
             usuario.password = await bcrypt.hash(usuario.password, salt)
     }
         
+    },
+    scopes: {
+        hideInfo: {
+            attributes:{
+                exclude: [ 'password', 'token','confirm', 'createdAt', 'updatedAt' ]
+            }
+        }
     }
 })
 Usuario.prototype.verifyPassword = function(password){

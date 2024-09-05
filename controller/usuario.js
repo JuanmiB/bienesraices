@@ -62,8 +62,6 @@ export const authentication = async (req, res) => {
 
 // autenticar al usuario
     const token = generateToken({ id: user.id, nombre: user.nombre })
-    console.log("JWT-----> ", token);
-
     return res.cookie("_token", token, {
         httpOnly: true,
        //secure: true, // Debe haber certificado SSL (Https)
@@ -152,8 +150,7 @@ export const confirmarCuenta = async (req, res) => {
 
     //verificer si el token es valido
     const userWithToken = await Usuario.findOne({ where: { token } })
-    console.log("USUARIO CON EL CONFIRM SUPUESTO: " + userWithToken)
-    console.log(userWithToken);
+
     if (!userWithToken) {
         return res.render('auth/confirmar-cuenta', {
             pagina: 'Error de confirmacion',

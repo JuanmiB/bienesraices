@@ -13,7 +13,7 @@
     })
 
     const geocodeService = L.esri.Geocoding.geocodeService()
-    console.log(geocodeService);
+
 
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -35,7 +35,6 @@
 
         //Obtener calles al soltar pin
         geocodeService.reverse().latlng(position, 13).run(function(error, resultado) {
-            console.log(resultado)
             marker.bindPopup(resultado.address.LongLabel)
 
             //coloca calle en los campos

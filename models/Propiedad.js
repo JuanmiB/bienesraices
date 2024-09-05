@@ -39,7 +39,7 @@ export const Propiedad = db.define('propiedades', {
         allowNull: false
     },
     calle: {
-        type: DataTypes.STRING(60),
+        type: DataTypes.STRING(100),
         allowNull: false
     },
     lat: {
@@ -47,10 +47,6 @@ export const Propiedad = db.define('propiedades', {
         allowNull: false
     },
     lng: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    imagen: {
         type: DataTypes.STRING,
         allowNull: false
     },

@@ -579,6 +579,9 @@ video {
 .h-96 {
   height: 24rem;
 }
+.h-auto {
+  height: auto;
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -609,14 +612,11 @@ video {
 .items-center {
   align-items: center;
 }
+.justify-center {
+  justify-content: center;
+}
 .justify-between {
   justify-content: space-between;
-}
-.gap-3 {
-  gap: 0.75rem;
-}
-.gap-4 {
-  gap: 1rem;
 }
 .space-y-5 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
@@ -627,6 +627,15 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+.divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-divide-opacity));
 }
 .rounded {
   border-radius: 0.25rem;
@@ -639,6 +648,12 @@ video {
 }
 .border {
   border-width: 1px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-dashed {
+  border-style: dashed;
 }
 .border-gray-300 {
   --tw-border-opacity: 1;
@@ -655,10 +670,6 @@ video {
 .bg-indigo-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(79 70 229 / var(--tw-bg-opacity));
-}
-.bg-indigo-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(67 56 202 / var(--tw-bg-opacity));
 }
 .bg-indigo-800 {
   --tw-bg-opacity: 1;
@@ -801,6 +812,9 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+.underline {
+  text-decoration-line: underline;
+}
 .placeholder-gray-400::-moz-placeholder {
   --tw-placeholder-opacity: 1;
   color: rgb(156 163 175 / var(--tw-placeholder-opacity));
@@ -819,10 +833,6 @@ video {
 }
 .placeholder\:italic::placeholder {
   font-style: italic;
-}
-.hover\:bg-indigo-400:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(129 140 248 / var(--tw-bg-opacity));
 }
 .hover\:bg-indigo-700:hover {
   --tw-bg-opacity: 1;
@@ -873,11 +883,5 @@ video {
   .md\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
-  }
-}
-@media (min-width: 1024px) {
-
-  .lg\:block {
-    display: block;
   }
 }
