@@ -7,10 +7,15 @@ html(lang="es")
         title Bienes Raices | #{pagina}
         block styles
         link(rel="stylesheet", href="/css/app.css")
-    body.min-h-screen.bg-gray-50
+    body.min-h-screen.bg-white.flex.flex-col
+        if hasUser
+            include includes/header-admin
+        else 
+            include includes/header-app
         
-
-        main(class="mx-auto container mt-10 px-2")
-            block contenido
-
+        main(class="flex-1 min-h-[400px]")
+            div(class="flex w-full")
+                block contenido
+        include includes/footer-app
         block scripts
+       

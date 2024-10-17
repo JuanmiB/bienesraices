@@ -1,32 +1,81 @@
 import { unlink } from 'node:fs/promises'
 import { check, validationResult } from "express-validator"
 import { Propiedad, Categoria, Precio, ImagenesPropiedad } from "../models/index.js"
+import { Sequelize } from 'sequelize'
 
-
+//muestro la lista de propiedades que un usuario tiene en su disposicion
 export const admin = async (req, res) => {
-    const { id } = req.user
+    const { pagina: paginaActual } = req.query
+    //pagina actual desde la url
+    console.log(paginaActual);
+    const expresion = /^[1-9]$/
 
-    //busco al usuario
-    //en la base de deatos
-    const propiedades = await Propiedad.findAll({
-        where: { usuarioId: id },
-        include: [
-            { model: Categoria, as: "categoria" },
-            { model: Precio, as: "precio" },
-            { model: ImagenesPropiedad, as: "foto" }
-        ]
-    })
-    //veo sus propiedades y las listo
+    if (!expresion.test(paginaActual)) {
+        return res.redirect('mis-propiedades?pagina=1')
+    }
+    try {
+        const { id } = req.user
+
+        const limit = 10
+        const offset = ((paginaActual * limit) - limit)
+        const [propiedades, total] = await Promise.all([
+            Propiedad.findAll({
+                limit,
+                offset,
+                where: {
+                    usuarioId: id
+                },
+                include: [
+                    { model: Categoria, as: "categoria" },
+                    { model: Precio, as: "precio" },
+                    { model: ImagenesPropiedad, as: "foto" }
+                ]
+            }),
+            Propiedad.count({
+                where: {
+                    usuarioId: id
+                }
+            })
+        ])
+
+        res.render('propiedades/admin', {
+            pagina: 'Mis Propiedades',
+            propiedades,
+            csrfToken: req.csrfToken(),
+            paginas: Math.ceil(total / limit),
+            paginaActual: Number(paginaActual),
+            total,
+            offset,
+            limit
+        })
+    } catch (error) {
+        console.log(error);
+    }
+
+
+    // const { id } = req.user
+
+    // //busco al usuario
+    // //en la base de deatos
+    // const propiedades = await Propiedad.findAll({
+    //     where: { usuarioId: id },
+    //     include: [
+    //         { model: Categoria, as: "categoria" },
+    //         { model: Precio, as: "precio" },
+    //         { model: ImagenesPropiedad, as: "foto" }
+    //     ]
+    // })
+    // //veo sus propiedades y las listo
 
 
 
-    res.render("propiedades/admin", {
-        titulo: "Mis Propiedades",
-        pagina: "Mis Propiedades",
-        propiedades,
-        datos: {},
-        csrfToken: req.csrfToken(),
-    })
+    // res.render("propiedades/admin", {
+    //     titulo: "Mis Propiedades",
+    //     pagina: "Mis Propiedades",
+    //     propiedades,
+    //     datos: {},
+    //     csrfToken: req.csrfToken(),
+    // })
 }
 
 export const crearPropiedad = async (req, res) => {
@@ -65,7 +114,7 @@ export const createPropertie = async (req, res) => {
             csrfToken: req.csrfToken(),
             errores: resultado.array(),
             categorias,
-            datos: req.body
+            datos: req.body,
         })
     }
 
@@ -110,7 +159,7 @@ export const createPropertie = async (req, res) => {
         })
 
         const { id } = propiedad
-        res.redirect(`/api/v1/propiedades/agregar-imagen/${id}`)
+        res.redirect(`/propiedades/agregar-imagen/${id}`)
 
     } catch (error) {
         console.log(error);
@@ -124,18 +173,18 @@ export const agregarImagen = async (req, res) => {
     //valido que la propiedad exista
     const existProp = await Propiedad.findByPk(id)
     if (!existProp) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     //Si esta publicada no se debe modificar
     if (existProp.publicado) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     //validar que la propiedad publicada pertenezca al usuario
 
     if (req.user.id !== existProp.usuarioId) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     res.render('propiedades/agregar-imagen', {
@@ -191,11 +240,11 @@ export const editarPropiedad = async (req, res) => {
     console.log(propiedad);
 
     if (!propiedad) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     if (propiedad.usuarioId !== req.user.id) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     // Busco y renderizo las categorias
@@ -302,12 +351,12 @@ export const deleteProp = async (req, res) => {
     const existPropiedad = await Propiedad.findByPk(id)
 
     if (!existPropiedad) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     //URL usuario id = id usuario
     if (existPropiedad.usuarioId !== req.user.id) {
-        return res.redirect("/api/v1/propiedades/mis-propiedades")
+        return res.redirect("/propiedades/mis-propiedades")
     }
 
     //Elimino la imagen
@@ -318,34 +367,90 @@ export const deleteProp = async (req, res) => {
     }
     //Elimino la propiedad
     await existPropiedad.destroy()
-    res.redirect("/api/v1/propiedades/mis-propiedades")
+    res.redirect("/propiedades/mis-propiedades")
 }
 
 // Area Publica
 // Mostrar uuna propiedad
 
 export const renderPropertyView = async (req, res) => {
-//busco la propiedad por id de url
+    const { id } = req.params
+    console.log("EL REQ DE USER ES ESTE:", req.user);
 
-const {id} = req.params
+    // Comprobar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id, {
+        include: [
+            { model: Precio, as: 'precio' },
+            { model: ImagenesPropiedad, as: 'foto' },
+            { model: Categoria, as: 'categoria', scope: 'eliminarPassword' },
+        ]
+    })
 
-const propiedad = await Propiedad.findByPk(id ,{
-    include: [
-        { model: Categoria, as: "categoria" },
-        { model: Precio, as: "precio" },
-        { model: ImagenesPropiedad, as: "foto" }
-    ]
-})
-
-if(!propiedad){
-    res.redirect("/404")
-}
+    if (!propiedad
+    ) {
+        return res.render('notfound', {
+            pagina: `Sin recurso`,
+            hasUser: req.user,
+            csrfToken: req.csrfToken(),
+        })
+    }
+    //Revizo si la propiedad publicada pertenece al mismo usuario
+    const ownerPage = req.user?.id === propiedad.usuarioId
 
     res.render('propiedades/property-view', {
-        pagina: `${propiedad.titulo}`,
-        titulo: `${propiedad.titulo}`,
+        propiedad,
+        pagina: propiedad.titulo,
         csrfToken: req.csrfToken(),
-        propiedad
+        usuario: req.user,
+        ownerPage,
+        enviado: false,
+        hasUser: req.user
+
 
     })
+}
+
+export const buscar = async (req, res) => {
+
+    await check('buscador').notEmpty().withMessage('no debe estar vacio').run(req)
+    await check('option').notEmpty().withMessage('no debe estar vacio').run(req)
+    await check('categoria').notEmpty().withMessage('no debe estar vacio').run(req)
+    let resultado = validationResult(req)
+
+    if (!resultado) {
+        // El input es el unico campo vacio, los demas ya estan preselecionados
+        // si hay valor se lo valida y se busca, si no se coloca un valor ficticio'
+        console.log("buscador vacio");
+    }
+
+    try {
+
+        //REMPLAZAR BUSCADOR VACIO POR VALOR 
+        const { option, buscador, categoria } = req.body
+        if (!buscador) {
+            req.body.buscador = "caseros"
+        }
+        console.log(option, buscador, categoria);
+        console.log(req.body.buscador);
+
+        const propiedadesBuscadas = await Propiedad.findAll({
+            where: {
+                titulo: {
+                    [Sequelize.Op.like]: '%' + req.body.buscador + '%'
+                }
+            },
+            include: [
+                { model: Precio, as: 'precio' },
+                { model: ImagenesPropiedad, as: 'foto' },
+                { model: Categoria, as: 'categoria', scope: 'eliminarPassword' },
+            ]
+        })
+
+        res.render('busqueda', {
+            pagina: `Resultado de: ${buscador}`,
+            propiedades: propiedadesBuscadas
+        })
+    } catch (error) {
+        console.log(error);
+    }
 }

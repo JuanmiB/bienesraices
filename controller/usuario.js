@@ -60,14 +60,15 @@ export const authentication = async (req, res) => {
         })
     }
 
-// autenticar al usuario
+    // autenticar al usuario
     const token = generateToken({ id: user.id, nombre: user.nombre })
     return res.cookie("_token", token, {
         httpOnly: true,
-       //secure: true, // Debe haber certificado SSL (Https)
+        maxAge: 3600 * 1000
+        //secure: true, // Debe haber certificado SSL (Https)
         // sameSite: "Strict",
 
-    }).redirect("/api/v1/propiedades/mis-propiedades")
+    }).redirect("/propiedades/mis-propiedades")
 }
 export const formSingIn = (req, res) => {
 
@@ -126,7 +127,7 @@ export const registrarUser = async (req, res) => {
         confirm: false,
         token: generarId()
     })
-    
+
     //ENVIO DE EMAIL DE CONFIRMACION
     emailRegistrer({
         nombre: usuario.nombre,
@@ -274,4 +275,8 @@ export const generateNewPassword = async (req, res) => {
         pagina: 'Contraseña restablecida!',
         mensaje: 'La contraseña se guardó correctamente'
     })
+}
+
+export const cerrarSesion = async (req, res) => {
+    res.clearCookie('_token').redirect("/")
 }

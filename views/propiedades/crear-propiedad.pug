@@ -9,7 +9,7 @@ block contenido
       span.font-normal Raices
      h2.text-center.text-4xl.font-extrabold= titulo
      div(class="bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10")
-        form.space-y-8(method="POST" action="/api/v1/propiedades/crear-propiedad")
+        form.space-y-8(method="POST" action="/propiedades/crear-propiedad")
             input(type="hidden" name="_csrf" value= csrfToken)
             div.space-y-8
             h3.text-xl.font-bold Informacion General
@@ -99,3 +99,4 @@ block scripts
     script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
     script(src="/js/map.js")
+    script(src="/js/scrollToError.js") 

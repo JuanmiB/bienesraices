@@ -5,7 +5,7 @@ export default {
     entry: {
         map: "./src/js/map.js",
         addImagen: "./src/js/addImagen.js",
-        pinnedMap: "./src/js/pinnedMap.js"
+        pinnedMap: "./src/js/pinnedMap.js",
     },
     output: {
         filename: "[name].js",

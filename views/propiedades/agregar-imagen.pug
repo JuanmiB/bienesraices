@@ -10,7 +10,7 @@ block contenido
         h2.text-center.text-2xl.font-extrabold= pagina
 
         div(class='bg-white shadow py-8 px-4 rounded mx-auto max-w-4xl my-10 md:px-10')
-            form.sapce-y-8(method="POST" action=`/api/v1/propiedades/agregar-imagen/${propiedad.id}` id="my-dropzone" class="dropzone border-dashed border-2 w-full min:h-96 h-auto rounded mb-5 flex-col justify-center items-center")
+            form.sapce-y-8(method="POST" action=`/propiedades/agregar-imagen/${propiedad.id}` id="my-dropzone" class="dropzone border-dashed border-2 w-full min:h-96 h-auto rounded mb-5 flex-col justify-center items-center")
                 input(type="hidden" name="_csrf" value= csrfToken)
 
             button(id="publicar" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer" type="submit") Publicar

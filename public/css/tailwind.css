@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .bg-position-x-house {
+        background-position-x: -295px;
+    }
+}

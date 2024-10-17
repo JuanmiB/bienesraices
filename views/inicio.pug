@@ -1,0 +1,29 @@
+extends ./layout/app
+
+block styles 
+
+block contenido
+    div(class='w-full rounded-b-2xl bg-indigo-700 m-0 p-5 md:rounded-b-[0px]')
+        h2(class="text-2xl font-bold text-white") Todos tenemos un sitio 
+
+        form(method="POST" action="/propiedades/buscar") 
+            input(type="hidden" name="_csrf" value= csrfToken)
+            div#search-form.flex.items-center.gap-5
+                div#input-radio(class='flex gap-5 my-2')
+                    div(class='relative group' name='radios' id='radios')
+                        input#comprar(type="radio" name="option" class="hidden peer" value="comprar" checked)
+                        label(for="comprar" class="text-bold text-lg text-slate-600 cursor-pointer group-hover:text-blue-600 peer-checked:text-blue-600 ") Comprar 
+                        div(class="absolute left-0 right-0 h-[2px] bg-transparent group-hover:bg-blue-600 peer-checked:bg-blue-600 before:block before:absolute before:left-0 before:right-0 before:h-[2px] before:bg-transparent before:content-[''] peer-checked:before:bg-blue-600 transition-all duration-200 ease-in-out")
+                    div(class='relative group')
+                        input#alquilar(type="radio" name="option" class="hidden peer" value="alquilar")
+                        label(for="alquilar" class="text-bold text-lg text-slate-600 cursor-pointer group-hover:text-blue-600 peer-checked:text-blue-600") Alquilar
+                        div(class="absolute left-0 right-0 h-[2px] bg-transparent group-hover:bg-blue-600 peer-checked:bg-blue-600 before:block before:absolute before:left-0 before:right-0 before:h-[2px] before:bg-transparent before:content-[''] peer-checked:before:bg-blue-600 transition-all duration-200 ease-in-out")
+            div(class='w-full justify-center md:flex')
+                div#select(class="flex mt-5 md:flex-row md:items-center md:gap-3")
+                    select#categoria(name="categoria" class="w-full md:w-auto py-2 border border-slate-300 rounded-md px-3 text-slate-600 focus:outline-none focus:border-blue-600 h-[56px]")
+                        each categoria in categorias 
+                            option(value=categoria.id class='p-20')= categoria.name 
+                div(class="flex w-full lg:w-[60vw] mt-5 md:flex-row md:items-center md:gap-3")
+                    input(type="text" value="" name='buscador' id='buscador' class="block  lg:w-[60vw] w-full py-2 border border-slate-300 rounded-md px-3 placeholder:italic text-slate-600 focus:outline-none focus:border-blue-600 focus:ring focus:ring-blue-200 h-[56px]" placeholder="Ej: Palermo, Cabaña, Catan")
+                button(type="submit" class="w-full md:w-auto py-3 px-5 mt-5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200 transition duration-200 ease-in-out") Buscar
+                

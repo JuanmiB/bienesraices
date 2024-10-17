@@ -1,51 +1,53 @@
 import express, { json } from "express"
 import csurf from "csurf"
 import cookieParser from "cookie-parser"
-// import session from "express-session"
-// import { csrfSync } from "csrf-sync"
 import db from "./config/db.js"
 import passport from "./config/passport.js"
 import { userRouter } from "./router/usuarios.js"
 import { propiedadesRouter } from "./router/propiedadesRouter.js"
+import { appRouter } from "./router/appRouter.js"
+import { apiRouter } from "./api/router/apiRouter.js"
 //Crear la app
- const app = express()
+const app = express()
 
- app.use(json())
- app.disable("x-powered-by")
+app.use(json())
+app.disable("x-powered-by")
 
- //habilitar lectura de datos de formulario
- app.use(express.urlencoded({extended: true}))
- 
- // Middleware de passport configurado
-  app.use(passport.initialize())
+//habilitar lectura de datos de formulario
+app.use(express.urlencoded({ extended: true }))
 
- //habilitar COOKIE PARSER
- app.use(cookieParser())
+// Middleware de passport configurado
+app.use(passport.initialize())
 
- // habilitar CSRF
- app.use(csurf({cookie: true}))
+//habilitar COOKIE PARSER
+app.use(cookieParser())
+
+// habilitar CSRF
+app.use(csurf({ cookie: true }))
 
 
- // Conexion a la BASE DE DATOS
- try{
-   await db.authenticate()
-   db.sync()
-   console.log("Conexion correcta");
- } catch (error){
-   console.log(error)
- }
+// Conexion a la BASE DE DATOS
+try {
+  await db.authenticate()
+  db.sync()
+  console.log("Conexion correcta");
+} catch (error) {
+  console.log(error)
+}
 
-  // Setteo de pug
-  app.set('view engine', 'pug')
-  app.set('views', './views')
+// Setteo de pug
+app.set('view engine', 'pug')
+app.set('views', './views')
 
-  app.use(express.static('public'))
+app.use(express.static('public'))
 
-    // Routing
- app.use('/api/v1/auth', userRouter)
- app.use('/api/v1/propiedades', propiedadesRouter)
+// Routing
+app.use('/', appRouter)
+app.use('/auth', userRouter)
+app.use('/propiedades', propiedadesRouter)
+app.use('/api/v1/propiedades', apiRouter)
 
- const PORT = process.env.PORT || 1234
- app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el domino: http://localhost:1234/api/v1/auth/registrer`)
- })
+const PORT = process.env.PORT || 1234
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el domino: http://localhost:1234/`)
+})

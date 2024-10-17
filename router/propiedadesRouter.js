@@ -1,7 +1,19 @@
 import { Router } from "express";
-import { admin, crearPropiedad, createPropertie, agregarImagen, saveImage, editarPropiedad, modificarPropiedad, deleteProp, renderPropertyView } from "../controller/propiedadesControles.js";
+import { 
+    admin, 
+    crearPropiedad, 
+    createPropertie, 
+    agregarImagen, 
+    saveImage, 
+    editarPropiedad, 
+    modificarPropiedad, 
+    deleteProp, 
+    renderPropertyView,
+    buscar 
+} from "../controller/propiedadesControles.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadImageMiddleware.js";
+import identifyUser from "../middleware/identifyUser.js";
 
 
 export const propiedadesRouter = Router()
@@ -14,7 +26,9 @@ propiedadesRouter.post('/agregar-imagen/:id', authMiddleware, upload.single("ima
 propiedadesRouter.get('/editar/:id', authMiddleware, editarPropiedad )
 propiedadesRouter.post('/editar/:id', authMiddleware, modificarPropiedad )
 propiedadesRouter.post('/eliminar/:id', authMiddleware, deleteProp )
+propiedadesRouter.post('/buscar', buscar )
+
 
 
 //Area Publica
-propiedadesRouter.get('/:id', renderPropertyView)
+propiedadesRouter.get('/:id', identifyUser, renderPropertyView)

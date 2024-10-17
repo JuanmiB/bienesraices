@@ -12,7 +12,7 @@ export function generateToken(user){
         sub: user.id,
         name: user.nombre
     }
-    const token = jwt.sign(payload, secret, { expiresIn: "1h"})
+    const token = jwt.sign(payload, secret)
     return token
 }
 

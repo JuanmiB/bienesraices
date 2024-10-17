@@ -13,7 +13,7 @@ block contenido
 
      section.mt-8.mx-auto.max-w-md
       div.bg-white.py-8.px-4.shadow
-       form(method="POST" action="/api/v1/auth/registrer").space-y-5
+       form(method="POST" action="/auth/registrer").space-y-5
         input(type="hidden" name="_csrf" value= csrfToken)
         div
             label.block.text-sm.uppercase.text-gray-500.mb-5.font-bold(for="nombre") Nombre

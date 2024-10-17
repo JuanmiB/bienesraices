@@ -1,20 +1,24 @@
 import { Router } from "express"
-import { 
-    formLogin, 
-    formSingIn, 
-    formRecoverPassword, 
+import {
+    formLogin,
+    formSingIn,
+    formRecoverPassword,
     registrarUser,
     confirmarCuenta,
     resetPassword,
     validateToken,
     generateNewPassword,
-    authentication
- } from "../controller/usuario.js"
+    authentication,
+    cerrarSesion
+} from "../controller/usuario.js"
 
 export const userRouter = Router()
 //login
 userRouter.get('/login', formLogin)
 userRouter.post('/login', authentication)
+
+//Cerrar sesion
+userRouter.post('/cerrar-sesion', cerrarSesion)
 
 //registrer
 userRouter.get('/registrer', formSingIn)

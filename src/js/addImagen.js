@@ -1,4 +1,4 @@
-import {Dropzone} from "dropzone";
+import { Dropzone } from "dropzone";
 
 const csrfToken = document.querySelector('meta[name="csrfToken"]').getAttribute("content")
 Dropzone.options.myDropzone = {
@@ -14,15 +14,15 @@ Dropzone.options.myDropzone = {
         'CSRF-Token': csrfToken
     },
     paramName: "imagen",
-    init: function(){
+    init: function () {
         const dropzone = this
         const btnPublicar = document.getElementById("publicar")
 
-        btnPublicar.addEventListener('click', function(){
+        btnPublicar.addEventListener('click', function () {
             dropzone.processQueue()
         })
-        dropzone.on('queuecomplete', function() {
-            if(dropzone.getActiveFiles().length == 0) {
+        dropzone.on('queuecomplete', function () {
+            if (dropzone.getActiveFiles().length == 0) {
                 window.location.href = 'mis-propiedades'
             }
         })

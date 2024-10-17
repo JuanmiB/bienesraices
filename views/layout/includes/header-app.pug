@@ -1,16 +1,11 @@
-header.bg-indigo-600.p-4
-    .container.mx-auto.flex.justify-between.items-center
-        a(href="/") 
-            h1.text-2xl.text-white.font-extrabold.text-center Bienes
-                span.font-normal Raices
-
-        nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden ")
-            a(href="/propiedades/mis-propiedades") Mis Propiedades 
-
-            form(action="/auth/cerrar-sesion" method="POST")
-                input(type="hidden" name="_csrf" value=csrfToken )
-                input( type="submit" class="bg-indigo-800 py-2 px-10 rounded-lg font-bold cursor-pointer" value="Cerrar Sesión")
-
+header.bg-indigo-600.p-4 
+    .container.mx-auto.flex.justify-between.items-cente 
+        a(href="/").text-2xl.text-white.font-extrablod.text-center ArQuilar 
+            span.font-normal Propiedades
+            
+        nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
+            a(href="/auth/registrer") Crear Cuenta
+            a(href="/auth/login") Iniciar Sesion 
 div(class="bg-indigo-700 py-5 hidden lg:block")
     div(class="container mx-auto flex justify-between")
         a(href="/categorias/1" class="text-sm font-bold uppercase text-white") Casas
