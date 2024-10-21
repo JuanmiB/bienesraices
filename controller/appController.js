@@ -48,4 +48,6 @@ export const notFound = async (req, res) => {
         csrfToken: req.csrfToken(),
     })
 }
-export const buscar = async (req, res) => { }
+export const buscar = async (req, res) => {
+    
+ }

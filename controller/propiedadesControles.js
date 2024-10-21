@@ -415,23 +415,32 @@ export const buscar = async (req, res) => {
     await check('buscador').notEmpty().withMessage('no debe estar vacio').run(req)
     await check('option').notEmpty().withMessage('no debe estar vacio').run(req)
     await check('categoria').notEmpty().withMessage('no debe estar vacio').run(req)
+
     let resultado = validationResult(req)
 
-    if (!resultado) {
-        // El input es el unico campo vacio, los demas ya estan preselecionados
-        // si hay valor se lo valida y se busca, si no se coloca un valor ficticio'
-        console.log("buscador vacio");
+    if (!resultado.isEmpty()) {
+        console.log("Resultado de la validación:", resultado);
+        // Si hay errores, renderizamos la página de inicio con los errores
+        const categorias = await Categoria.findAll()
+        return res.render('inicio', {
+            pagina: `Sin recurso`,
+            hasUser: req.user,
+            csrfToken: req.csrfToken(),
+            errores: resultado.array(),
+            categorias
+        })
     }
+    console.log("buscando");
 
     try {
+      
 
         //REMPLAZAR BUSCADOR VACIO POR VALOR 
         const { option, buscador, categoria } = req.body
-        if (!buscador) {
-            req.body.buscador = "caseros"
-        }
-        console.log(option, buscador, categoria);
-        console.log(req.body.buscador);
+        // if (!buscador) {
+        //     req.body.buscador = "Casa";
+        //     buscador = "Casa";
+        //     }
 
         const propiedadesBuscadas = await Propiedad.findAll({
             where: {
@@ -442,7 +451,8 @@ export const buscar = async (req, res) => {
             include: [
                 { model: Precio, as: 'precio' },
                 { model: ImagenesPropiedad, as: 'foto' },
-                { model: Categoria, as: 'categoria', scope: 'eliminarPassword' },
+                { model: Categoria, as: 'categoria', 
+                scope: 'eliminarPassword' },
             ]
         })
 
